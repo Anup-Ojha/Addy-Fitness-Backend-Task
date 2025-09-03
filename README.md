@@ -99,10 +99,15 @@ pip install -r requirements.txt
 
 5) **Create a `.env` file** in project root (used by `app/core/security.py`)
 ```
-SECRET_KEY=replace_with_a_secure_random_string
+SECRET_KEY=replace_with_a_secure_random_string  
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
 ```
+
+**Note:- I have added my .env file in this as for only your usage which is not my personal or private security key its just a generated one**
+**Note:- The venv folder is also been uploaded to git just for direct zip download and usage**
+**Also it is not a best practice to do the above two things its just for a assesment is have also done as its a bad practice to do it**
+
 > Generate a secure key:
 > ```python
 > import secrets; print(secrets.token_hex(32))
@@ -183,10 +188,9 @@ uvicorn app.main:app --reload
 
 ### Users (protected – require Bearer token)
 
-- **GET** `/users/me` → current user (from token)
-- **POST** `/users/` → create a user (admin-like behavior)
+
+- **POST** `/users/` → create a user (admin-like behavior) '''**Note:- This was removed as we have added the register function** '''
 - **GET** `/users/{user_id}` → get user by id
-- **GET** `/users/?skip=0&limit=10` → list active users (pagination)
 - **PUT** `/users/{user_id}` → update user (name/phone/email with collision checks)
 - **DELETE** `/users/{user_id}` → soft delete (`is_active = False`)
 
@@ -200,40 +204,13 @@ uvicorn app.main:app --reload
 2. Expand **`POST /auth/register`**, click **Try it out**, fill the body, and **Execute**.  
    Copy the `access_token` from the response.
 3. Alternatively, use **`POST /auth/login`** to get a token for an existing user.
-4. Click the **Authorize** button (top-right in Swagger UI).  
-   In the value field type: `Bearer <paste_your_token>` and click **Authorize**.
-5. Now call any **/users/** endpoints (they will succeed only with a valid token):
+4. Now call any **/users/** endpoints (they will succeed only with a valid token):
    - `GET /users/me` to confirm who you are.
    - `POST /users/` to create other users.
    - `GET /users/?skip=0&limit=10` to list users with pagination.
    - `PUT /users/{id}` to update, `DELETE /users/{id}` to deactivate.
 
 ---
-
-## Quick Tests (curl)
-
-**Register**
-```bash
-curl -X POST http://127.0.0.1:8000/auth/register   -H "Content-Type: application/json"   -d '{"email":"john@example.com","password":"supersecret123","full_name":"John Doe","phone":"9999999999"}'
-```
-
-**Login**
-```bash
-curl -X POST http://127.0.0.1:8000/auth/login   -H "Content-Type: application/json"   -d '{"email":"john@example.com","password":"supersecret123"}'
-```
-
-**Use token**
-```bash
-TOKEN="<paste token here>"
-
-curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:8000/users/me
-curl -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:8000/users?skip=0&limit=10"
-```
-
-**Create user (protected)**
-```bash
-curl -X POST http://127.0.0.1:8000/users/   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"email":"alice@example.com","full_name":"Alice","phone":"1234567890"}'
-```
 
 ---
 
@@ -293,10 +270,6 @@ Install the VS Code **REST Client** extension and click **Send Request** above e
 - **`sqlite3.OperationalError: no such table: users`**  
   Make sure `Base.metadata.create_all(bind=engine)` runs before queries.  
   Restart the server if you changed models. Delete `sql_app.db` to reset.
-
-- **401 Unauthorized**  
-  Ensure you clicked **Authorize** in Swagger UI and added `Bearer <token>`.  
-  Tokens expire in 24 hours (configurable via `.env`).
 
 - **Import path issues in VS Code**  
   Run with module path:  
