@@ -297,15 +297,6 @@ Install the VS Code **REST Client** extension and click **Send Request** above e
 
 ---
 
-## Run Checklist Before Submission
-
-- [ ] `uvicorn app.main:app --reload` runs without errors  
-- [ ] `/docs` opens and all endpoints work  
-- [ ] Register → Login → copy token → Authorize → use `/users/*`  
-- [ ] README and requirements.txt present and accurate  
-- [ ] Repo is public on GitHub and link is shareable
-
----
 
 ## License
 
